@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management | Campus Canteen</title>
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+    <header class="staff-header">
+        <div class="brand">
+            <span class="brand-icon">🍽️</span>
+            <div>
+                <h1>Campus Canteen</h1>
+                <p>Staff Portal</p>
+            </div>
+        </div>
+        <button id="logoutButton" class="logout-button" type="button">Logout</button>
+    </header>
+
+    <div class="staff-layout">
+        <aside class="staff-sidebar">
+            <p class="sidebar-heading">MAIN MENU</p>
+            <a href="dashboard.html" class="nav-link"><span>▦</span> Dashboard</a>
+            <a href="menu-management.html" class="nav-link active"><span>🍴</span> Menu Management</a>
+            <a href="orders.html" class="nav-link"><span>📋</span> Orders</a>
+            <a href="locations.html" class="nav-link">📍 Locations</a>
+        </aside>
+
+        <main class="dashboard-content">
+            <div class="page-heading">
+                <div>
+                    <h2>Menu Management</h2>
+                    <p>Add food items and manage your canteen menu.</p>
+                </div>
+                <span class="staff-badge">STAFF</span>
+            </div>
+
+            <section class="recent-orders-card menu-form-card">
+                <div class="section-heading">
+                    <div>
+                        <h3 id="formTitle">Add New Food Item</h3>
+                        <p>Enter the food item details below.</p>
+                    </div>
+                </div>
+
+                <form id="menuForm" class="menu-form">
+                    <input type="hidden" id="foodId">
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="foodName">Food Name</label>
+                            <input id="foodName" type="text" maxlength="100"
+                                   placeholder="e.g. Masala Dosa" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="foodCategory">Category</label>
+                            <input id="foodCategory" type="text" maxlength="50"
+                                   placeholder="e.g. Breakfast" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="foodPrice">Price (₹)</label>
+                            <input id="foodPrice" type="number" min="0.01"
+                                   max="100000" step="0.01"
+                                   placeholder="e.g. 45" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="foodAvailable">Availability</label>
+                            <select id="foodAvailable">
+                                <option value="true">Available</option>
+                                <option value="false">Unavailable</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field full-width">
+                            <label for="foodDescription">Description</label>
+                            <textarea id="foodDescription" rows="3" maxlength="500"
+                                      placeholder="Describe the food item"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="saveFoodButton" class="primary-button" type="submit">
+                            Add Food Item
+                        </button>
+                        <button id="cancelEditButton" class="secondary-button"
+                                type="button" hidden>Cancel Edit</button>
+                    </div>
+                    <p id="menuMessage" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <section class="recent-orders-card menu-list-card">
+                <div class="section-heading">
+                    <div>
+                        <h3>Food Items</h3>
+                        <p>Manage the items shown in the student menu.</p>
+                    </div>
+                    <button id="refreshMenuButton" class="secondary-button" type="button">
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Availability</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTableBody">
+                            <tr><td colspan="5">Loading menu items...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="menuListMessage" role="status"></p>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+</html>

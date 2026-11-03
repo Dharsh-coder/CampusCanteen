@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food Menu - Campus Canteen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    
+<nav class="navbar">
+    <div class="logo">
+        🍴 <span>Campus Canteen</span>
+    </div>
+
+    <ul class="nav-links">
+        <li>
+            <a href="index.html">Home</a>
+        </li>
+        <li>
+            <a href="menu.html" class="active">Menu</a>
+        </li>
+        <li>
+            <a href="cart.html">Cart</a>
+        </li>
+        <li>
+            <a href="my-orders.html">My Orders</a>
+        </li>
+        <li>
+            <button type="button" id="student-logout-btn">Logout</button>
+        </li>
+    </ul>
+</nav>
+
+
+    <!-- Menu Header -->
+    <section class="menu-header">
+
+        <h1>🍽️ Today's Menu</h1>
+
+        <p>Choose your favorite food and add it to your cart.</p>
+
+    </section>
+
+
+    <!-- Categories -->
+    <div class="categories">
+
+        <button>All</button>
+        <button>Breakfast</button>
+        <button>Lunch</button>
+        <button>Snacks</button>
+        <button>Drinks</button>
+
+    </div>
+
+
+  
+    
+<!-- Food Items -->
+<section class="food-container" id="food-container">
+    <p id="menu-loading" role="status">
+        Loading today's menu...
+    </p>
+</section>
+
+
+    <script src="js/auth-guard.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/student-logout.js"></script>
+
+</body>
+
+</html>

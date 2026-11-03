@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Management | Campus Canteen</title>
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+    <header class="staff-header">
+        <div class="brand">
+            <span class="brand-icon">🍽️</span>
+            <div>
+                <h1>Campus Canteen</h1>
+                <p>Staff Portal</p>
+            </div>
+        </div>
+        <button id="logoutButton" class="logout-button" type="button">
+            Logout
+        </button>
+    </header>
+
+    <div class="staff-layout">
+        <aside class="staff-sidebar">
+            <p class="sidebar-heading">MAIN MENU</p>
+            <a href="dashboard.html" class="nav-link">▦ Dashboard</a>
+            <a href="menu-management.html" class="nav-link">🍴 Menu Management</a>
+            <a href="locations.html" class="nav-link active">📍 Locations</a>
+            <a href="orders.html" class="nav-link">📋 Orders</a>
+        </aside>
+
+        <main class="dashboard-content">
+            <div class="page-heading">
+                <div>
+                    <h2>Location Management</h2>
+                    <p>Manage predefined campus pickup and delivery locations.</p>
+                </div>
+                <span class="staff-badge">STAFF</span>
+            </div>
+
+            <section class="recent-orders-card menu-form-card">
+                <div class="section-heading">
+                    <div>
+                        <h3 id="locationFormTitle">Add New Location</h3>
+                        <p>Enter a campus location name.</p>
+                    </div>
+                </div>
+
+                <form id="locationForm" class="menu-form">
+                    <input type="hidden" id="locationId">
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="locationName">Location Name</label>
+                            <input
+                                id="locationName"
+                                type="text"
+                                maxlength="100"
+                                placeholder="e.g. Main Canteen"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-field" id="locationStatusField" hidden>
+                            <label for="locationActive">Status</label>
+                            <select id="locationActive">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="saveLocationButton"
+                                class="primary-button" type="submit">
+                            Add Location
+                        </button>
+
+                        <button id="cancelLocationEditButton"
+                                class="secondary-button"
+                                type="button" hidden>
+                            Cancel Edit
+                        </button>
+                    </div>
+
+                    <p id="locationMessage" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <section class="recent-orders-card menu-list-card">
+                <div class="section-heading">
+                    <div>
+                        <h3>Campus Locations</h3>
+                        <p>Manage locations available to students.</p>
+                    </div>
+
+                    <button id="refreshLocationsButton"
+                            class="secondary-button" type="button">
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="locationsTableBody">
+                            <tr>
+                                <td colspan="3">Loading locations...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p id="locationListMessage" role="status"></p>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/locations.js"></script>
+</body>
+</html>

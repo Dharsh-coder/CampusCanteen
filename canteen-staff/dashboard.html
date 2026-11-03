@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard | Campus Canteen</title>
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+    <header class="staff-header">
+        <div class="brand">
+            <span class="brand-icon">🍽️</span>
+            <div>
+                <h1>Campus Canteen</h1>
+                <p>Staff Portal</p>
+            </div>
+        </div>
+
+        <button id="logoutButton" class="logout-button" type="button">
+            Logout
+        </button>
+    </header>
+
+    <div class="staff-layout">
+        <aside class="staff-sidebar">
+            <p class="sidebar-heading">MAIN MENU</p>
+
+            <a href="dashboard.html" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="menu-management.html" class="nav-link">
+                <span>🍴</span> Menu Management
+            </a>
+
+            <a href="orders.html" class="nav-link">
+                <span>📋</span> Orders
+            </a>
+            <a href="locations.html" class="nav-link">
+    📍 Locations
+</a>
+        </aside>
+
+        <main class="dashboard-content">
+            <div class="page-heading">
+                <div>
+                    <h2>Dashboard</h2>
+                    <p>Welcome to your canteen management dashboard!</p>
+                </div>
+                <span class="staff-badge">STAFF</span>
+            </div>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-icon orange">📦</div>
+                    <p>Total Orders</p>
+                    <h3 id="totalOrders">—</h3>
+                    <span>All recorded orders</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-icon yellow">⏳</div>
+                    <p>Pending Orders</p>
+                    <h3 id="pendingOrders">—</h3>
+                    <span>Awaiting completion</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <p>Completed Orders</p>
+                    <h3 id="completedOrders">—</h3>
+                    <span>Successfully completed</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-icon blue">₹</div>
+                    <p>Today's Orders</p>
+                    <h3 id="todayOrders">—</h3>
+                    <span>Orders placed today</span>
+                </article>
+            </section>
+
+            <section class="recent-orders-card">
+                <div class="section-heading">
+                    <div>
+                        <h3>Recent Orders</h3>
+                        <p>Latest orders from students</p>
+                    </div>
+                    <a href="orders.html" class="view-all-link">View all →</a>
+                </div>
+
+                <div id="dashboardMessage" class="dashboard-message">
+                    Dashboard statistics will appear here once connected
+                    to the backend.
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Student</th>
+                                <th>Pickup Time</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersBody">
+                            <tr>
+                                <td colspan="5">Loading orders...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

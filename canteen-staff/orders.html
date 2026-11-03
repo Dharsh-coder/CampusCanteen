@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management | Campus Canteen</title>
+    <link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+    <header class="staff-header">
+        <div class="brand">
+            <span class="brand-icon">🍽️</span>
+            <div>
+                <h1>Campus Canteen</h1>
+                <p>Staff Portal</p>
+            </div>
+        </div>
+        <button id="logoutButton" class="logout-button" type="button">Logout</button>
+    </header>
+
+    <div class="staff-layout">
+        <aside class="staff-sidebar">
+            <p class="sidebar-heading">MAIN MENU</p>
+            <a href="dashboard.html" class="nav-link">
+                <span>▦</span> Dashboard
+            </a>
+            <a href="menu-management.html" class="nav-link">
+                <span>🍴</span> Menu Management
+            </a>
+            <a href="orders.html" class="nav-link active">
+                <span>📋</span> Orders
+            </a>
+            <a href="locations.html" class="nav-link">
+    📍 Locations
+</a>
+        </aside>
+
+        <main class="dashboard-content">
+            <div class="page-heading">
+                <div>
+                    <h2>Order Management</h2>
+                    <p>View student orders and update their status.</p>
+                </div>
+                <span class="staff-badge">STAFF</span>
+            </div>
+
+            <section class="stats-grid order-stats">
+                <article class="stat-card">
+                    <div class="stat-icon orange">📦</div>
+                    <p>Total Orders</p>
+                    <h3 id="ordersTotal">—</h3>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-icon yellow">⏳</div>
+                    <p>Pending</p>
+                    <h3 id="ordersPending">—</h3>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <p>Completed</p>
+                    <h3 id="ordersCompleted">—</h3>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-icon blue">✕</div>
+                    <p>Cancelled</p>
+                    <h3 id="ordersCancelled">—</h3>
+                </article>
+            </section>
+
+            <section class="recent-orders-card">
+                <div class="section-heading">
+                    <div>
+                        <h3>All Orders</h3>
+                        <p>Latest student orders from the database.</p>
+                    </div>
+                    <button id="refreshOrdersButton" class="secondary-button"
+                            type="button">Refresh</button>
+                </div>
+
+                <div class="order-filters">
+                    <label for="statusFilter">Filter by status</label>
+                    <select id="statusFilter">
+                        <option value="ALL">All Orders</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+
+                <p id="ordersMessage" role="status" aria-live="polite">
+                    Loading orders...
+                </p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th>Phone</th>
+                                <th>Pickup Time</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr>
+                                <td colspan="9">Loading orders...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+**/application.properties
+**/application-local.properties
+
+# Java generated files
+**/target/
+**/build/
+*.class
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

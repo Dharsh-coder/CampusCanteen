@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Campus Canteen</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .checkout-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        .checkout-form,
+        .checkout-summary {
+            min-width: 0;
+            background: #fff;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(0,0,0,.08);
+        }
+
+        .checkout-form h2,
+        .checkout-summary h2 {
+            margin-bottom: 22px;
+            color: #292929;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #ff6933;
+            outline: none;
+        }
+
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checkout-item span:first-child {
+            overflow-wrap: anywhere;
+        }
+
+        .checkout-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 2px solid #eee;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            background: #ff6933;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .place-order-btn:hover {
+            background: #ed5424;
+        }
+
+        .place-order-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .back-to-cart {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ff6933;
+            text-decoration: none;
+        }
+
+        .checkout-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+            display: none;
+        }
+
+        .checkout-message.error {
+            display: block;
+            background: #fff0f0;
+            color: #a32020;
+        }
+
+        .checkout-message.success {
+            display: block;
+            background: #edfff1;
+            color: #176b31;
+        }
+
+        .checkout-note {
+            margin-top: 15px;
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 750px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .checkout-form,
+            .checkout-summary {
+                padding: 22px;
+            }
+        }
+        .student-page-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 24px;
+}
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">🍴 <span>Campus Canteen</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">Cart 🛒</a></li>
+            <li><a href="my-orders.html">My Orders</a></li>
+            <li>
+    <button type="button" id="student-logout-btn">Logout</button>
+</li>
+        </ul>
+    </nav>
+
+    <section class="menu-header">
+        <h1>🛍️ Checkout</h1>
+        <p>Enter your details and confirm your canteen order.</p>
+    </section>
+
+    <main class="checkout-container">
+        <section class="checkout-form">
+            <h2>Student Details</h2>
+
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="student-name">Registered Name</label>
+                    <input type="text" id="student-name" readonly
+                           placeholder="Loading your account details..." aria-readonly="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="roll-number">Registered Roll Number</label>
+                    <input type="text" id="roll-number" readonly
+                           placeholder="Loading your account details..." aria-readonly="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Registered Contact Number</label>
+                    <input type="tel" id="phone" readonly
+                           placeholder="Loading your account details..." aria-readonly="true">
+                </div>
+                <!-- Fulfilment Method -->
+<div class="form-group">
+    <label for="fulfillment-type">Fulfilment Method</label>
+
+    <select id="fulfillment-type" name="fulfillmentType" required>
+        <option value="PICKUP">Pickup</option>
+        <option value="DELIVERY">Delivery</option>
+    </select>
+</div>
+
+<!-- Campus Location -->
+<div class="form-group">
+    <label for="campus-location">Campus Location</label>
+
+    <select id="campus-location" name="locationId" required>
+        <option value="">Loading campus locations...</option>
+    </select>
+</div>
+
+                <div class="form-group">
+                    <label for="pickup-time" id="time-label">Pickup Time</label>
+                    <select id="pickup-time" name="pickupTime" required>
+                        <option value="">Select pickup time</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="10:30">10:30 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="12:30">12:30 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="13:30">1:30 PM</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment-method">Payment Method</label>
+                    <select id="payment-method" name="paymentMethod" required>
+                        <option value="">Select payment method</option>
+                        <option value="CASH">Pay at Canteen</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="place-order-btn"
+                        id="place-order-btn">
+                    Place Order
+                </button>
+
+                <p id="checkout-message"
+                   class="checkout-message"
+                   role="status"
+                   aria-live="polite"></p>
+
+                <p class="checkout-note">
+                    Payment is collected at the canteen.
+                </p>
+            </form>
+        </section>
+
+        <section class="checkout-summary">
+            <h2>Order Summary</h2>
+            <div id="checkout-items"></div>
+
+            <div class="checkout-item">
+    <span>Delivery Charge</span>
+    <span id="delivery-charge">₹0.00</span>
+</div>
+            <div class="checkout-total">
+                <span>Total Amount</span>
+                <span id="checkout-total">₹0.00</span>
+            </div>
+
+            <a href="cart.html" class="back-to-cart">← Back to Cart</a>
+        </section>
+    </main>
+
+    <script src="js/auth-guard.js"></script>
+    
+    <script>
+    (() => {
+        "use strict";
+
+        const API_BASE_URL = "http://localhost:8080/api";
+        const ORDER_URL = `${API_BASE_URL}/orders`;
+
+        const form = document.getElementById("checkout-form");
+        const itemsContainer = document.getElementById("checkout-items");
+        const totalElement = document.getElementById("checkout-total");
+        const submitButton = document.getElementById("place-order-btn");
+        const messageElement = document.getElementById("checkout-message");
+
+        const fulfillmentType = document.getElementById("fulfillment-type");
+        const campusLocation = document.getElementById("campus-location");
+        const pickupTime = document.getElementById("pickup-time");
+        const timeLabel = document.getElementById("time-label");
+        const deliveryChargeElement = document.getElementById("delivery-charge");
+        const paymentMethod = document.getElementById("payment-method");
+
+        let isSubmitting = false;
+        let studentAccount = null;
+        let locationsLoaded = false;
+        let accountLoaded = false;
+        let cartValid = false;
+
+        function updateSubmitButton() {
+            const locationSelected =
+                Number.isInteger(Number(campusLocation.value)) &&
+                Number(campusLocation.value) > 0;
+
+            submitButton.disabled =
+                isSubmitting ||
+                !locationsLoaded ||
+                !accountLoaded ||
+                !cartValid ||
+                !locationSelected;
+        }
+
+        function showMessage(message, type = "error") {
+            messageElement.textContent = message;
+            messageElement.className = message
+                ? `checkout-message ${type}`
+                : "checkout-message";
+        }
+
+        function getCart() {
+            try {
+                const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                console.error("Could not read cart:", error);
+                return [];
+            }
+        }
+
+        async function loadCampusLocations() {
+            locationsLoaded = false;
+            campusLocation.disabled = true;
+            campusLocation.replaceChildren();
+
+            const loadingOption = document.createElement("option");
+            loadingOption.value = "";
+            loadingOption.textContent = "Loading campus locations...";
+            campusLocation.appendChild(loadingOption);
+            updateSubmitButton();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/locations`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Unable to load campus locations. Please refresh the page.");
+                }
+
+                const locations = await response.json();
+
+                if (!Array.isArray(locations) || locations.length === 0) {
+                    throw new Error("No active campus locations are available right now.");
+                }
+
+                campusLocation.replaceChildren();
+
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = "Select campus location";
+                placeholder.selected = true;
+                campusLocation.appendChild(placeholder);
+
+                locations.forEach(location => {
+                    const id = Number(location.id);
+                    const name = String(location.name || "").trim();
+
+                    if (!Number.isInteger(id) || id <= 0 || !name) {
+                        return;
+                    }
+
+                    const option = document.createElement("option");
+                    option.value = String(id);
+                    option.textContent = name;
+                    campusLocation.appendChild(option);
+                });
+
+                if (campusLocation.options.length <= 1) {
+                    throw new Error("The campus location list contains no valid locations.");
+                }
+
+                locationsLoaded = true;
+                campusLocation.disabled = false;
+            } catch (error) {
+                campusLocation.replaceChildren();
+                const errorOption = document.createElement("option");
+                errorOption.value = "";
+                errorOption.textContent = "Locations unavailable";
+                campusLocation.appendChild(errorOption);
+                campusLocation.disabled = true;
+                showMessage(error.message || "Could not load campus locations.");
+            } finally {
+                updateSubmitButton();
+            }
+        }
+
+        async function loadStudentAccount() {
+            accountLoaded = false;
+            studentAccount = null;
+            updateSubmitButton();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/student/auth/me`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" },
+                    credentials: "include"
+                });
+
+                if (!response.ok) {
+                    throw new Error("Please log in with your student account before checkout.");
+                }
+
+                const account = await response.json();
+                const studentName = account.studentName ?? account.name ?? "";
+                const rollNumber = account.rollNumber ?? "";
+                const phone = account.phone ?? "";
+
+                if (!String(studentName).trim() || !String(rollNumber).trim()) {
+                    throw new Error("Your registered name or roll number is missing. Please check your student account.");
+                }
+
+                studentAccount = account;
+                document.getElementById("student-name").value = studentName;
+                document.getElementById("roll-number").value = rollNumber;
+                document.getElementById("phone").value =
+                    phone || "Stored in your student account";
+
+                accountLoaded = true;
+            } catch (error) {
+                showMessage(
+                    error.message ||
+                    "Could not verify your student account. Please log in again."
+                );
+            } finally {
+                updateSubmitButton();
+            }
+        }
+
+        function displaySummary() {
+            const cart = getCart();
+            itemsContainer.replaceChildren();
+
+            let total = 0;
+            cartValid = cart.length > 0;
+
+            if (cart.length === 0) {
+                const emptyMessage = document.createElement("p");
+                emptyMessage.textContent = "Your cart is empty. ";
+
+                const link = document.createElement("a");
+                link.href = "menu.html";
+                link.textContent = "Browse the menu";
+
+                emptyMessage.appendChild(link);
+                itemsContainer.appendChild(emptyMessage);
+                totalElement.textContent = "₹0.00";
+                cartValid = false;
+                updateSubmitButton();
+                return;
+            }
+
+            for (const item of cart) {
+                const id = Number(item.id);
+                const quantity = Number(item.quantity);
+                const price = Number(item.price);
+                const name = String(item.name || "").trim();
+
+                if (
+                    !Number.isInteger(id) || id <= 0 ||
+                    !Number.isInteger(quantity) || quantity < 1 || quantity > 100 ||
+                    !Number.isFinite(price) || price < 0 ||
+                    !name
+                ) {
+                    cartValid = false;
+                    showMessage("Your cart has invalid item details. Please revisit the menu and add the items again.");
+                    totalElement.textContent = "₹—";
+                    updateSubmitButton();
+                    return;
+                }
+
+                const row = document.createElement("div");
+                row.className = "checkout-item";
+
+                const itemName = document.createElement("span");
+                itemName.textContent = `${name} × ${quantity}`;
+
+                const amount = document.createElement("span");
+                amount.textContent = `₹${(price * quantity).toFixed(2)}`;
+
+                row.append(itemName, amount);
+                itemsContainer.appendChild(row);
+                total += price * quantity;
+            }
+
+            totalElement.textContent = `₹${total.toFixed(2)}`;
+            deliveryChargeElement.textContent = "₹0.00";
+            updateSubmitButton();
+        }
+
+        function updateFulfillmentLabels() {
+            const isDelivery = fulfillmentType.value === "DELIVERY";
+            timeLabel.textContent = isDelivery
+                ? "Preferred Delivery Time"
+                : "Pickup Time";
+
+            const timePlaceholder = pickupTime.options[0];
+            if (timePlaceholder) {
+                timePlaceholder.textContent = isDelivery
+                    ? "Select preferred delivery time"
+                    : "Select pickup time";
+            }
+
+            // Delivery is currently free as per the project requirements.
+            deliveryChargeElement.textContent = "₹0.00";
+        }
+
+        campusLocation.addEventListener("change", updateSubmitButton);
+        fulfillmentType.addEventListener("change", updateFulfillmentLabels);
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            if (isSubmitting) {
+                return;
+            }
+
+            showMessage("");
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                showMessage("Your cart is empty. Please add food first.");
+                displaySummary();
+                return;
+            }
+
+            if (!studentAccount || !accountLoaded) {
+                showMessage("Your student account could not be verified. Please log in again.");
+                return;
+            }
+
+            if (!locationsLoaded) {
+                showMessage("Campus locations are not ready. Please refresh the page and try again.");
+                return;
+            }
+
+            const locationId = Number(campusLocation.value);
+            if (!Number.isInteger(locationId) || locationId <= 0) {
+                showMessage("Please select a campus location.");
+                campusLocation.focus();
+                return;
+            }
+
+            if (!["PICKUP", "DELIVERY"].includes(fulfillmentType.value)) {
+                showMessage("Please select Pickup or Delivery.");
+                return;
+            }
+
+            if (paymentMethod.value !== "CASH") {
+                showMessage("Please select Pay at Canteen.");
+                return;
+            }
+
+            // The backend expects a map of food ID to quantity.
+            const items = {};
+
+            for (const item of cart) {
+                const id = Number(item.id);
+                const quantity = Number(item.quantity);
+
+                if (
+                    !Number.isInteger(id) || id <= 0 ||
+                    !Number.isInteger(quantity) || quantity < 1 || quantity > 100
+                ) {
+                    showMessage("A cart item is invalid. Return to the menu and add it again.");
+                    return;
+                }
+
+                items[id] = (items[id] || 0) + quantity;
+
+                if (items[id] > 100) {
+                    showMessage("Maximum quantity for one food item is 100.");
+                    return;
+                }
+            }
+
+            const orderData = {
+                pickupTime: pickupTime.value,
+                fulfillmentType: fulfillmentType.value,
+                locationId,
+                items
+            };
+
+            isSubmitting = true;
+            updateSubmitButton();
+            submitButton.textContent = "Placing Order...";
+            showMessage("Sending your order to the canteen...", "success");
+
+            try {
+                const response = await fetch(ORDER_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(orderData)
+                });
+
+                const responseText = await response.text();
+
+                if (!response.ok) {
+                    let errorMessage = responseText;
+                    try {
+                        const errorData = JSON.parse(responseText);
+                        errorMessage =
+                            errorData.message ||
+                            errorData.error ||
+                            responseText;
+                    } catch {
+                        // Keep the plain-text server response.
+                    }
+
+                    throw new Error(
+                        errorMessage || `Server returned HTTP ${response.status}.`
+                    );
+                }
+
+                let savedOrder = {};
+                if (responseText.trim()) {
+                    try {
+                        savedOrder = JSON.parse(responseText);
+                    } catch {
+                        throw new Error("The server response was not valid JSON.");
+                    }
+                }
+
+                const confirmedOrder = {
+                    ...savedOrder,
+                    pickupTime: orderData.pickupTime,
+                    fulfillmentType: orderData.fulfillmentType,
+                    locationId: orderData.locationId,
+                    locationName:
+                        campusLocation.options[campusLocation.selectedIndex].text,
+                    deliveryCharge: savedOrder.deliveryCharge ?? 0,
+                    items: savedOrder.items ?? items,
+                    totalAmount:
+                        savedOrder.totalAmount ??
+                        savedOrder.total_amount ??
+                        null
+                };
+
+                sessionStorage.setItem(
+                    "confirmedOrder",
+                    JSON.stringify(confirmedOrder)
+                );
+
+                localStorage.removeItem("cart");
+                window.location.href = "order-confirmation.html";
+            } catch (error) {
+                console.error("Checkout error:", error);
+                showMessage(
+                    "Order could not be placed. " +
+                    (error.message || "Please check your connection and try again.")
+                );
+
+                isSubmitting = false;
+                submitButton.textContent = "Place Order";
+                updateSubmitButton();
+            }
+        });
+
+        updateFulfillmentLabels();
+        displaySummary();
+        loadCampusLocations();
+        loadStudentAccount();
+
+        console.log("Checkout page JavaScript loaded successfully.");
+    })();
+    </script>
+    <script src="js/student-logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Campus Canteen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .confirmation-container {
+            max-width: 650px;
+            margin: 45px auto;
+            padding: 35px 25px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .09);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 65px;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-container h1 {
+            color: #28a745;
+            margin-bottom: 12px;
+        }
+
+        .confirmation-container > p {
+            color: #555;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #fffaf5;
+            border: 1px solid #f3e3d5;
+            text-align: left;
+        }
+
+        .order-details h2 {
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee2d8;
+        }
+
+        .detail-row span:first-child {
+            color: #666;
+        }
+
+        .detail-row span:last-child {
+            text-align: right;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .order-items {
+            margin-top: 18px;
+        }
+
+        .order-items h3 {
+            margin-bottom: 10px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 9px 0;
+        }
+
+        .order-total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ead8c8;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .confirmation-buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .confirmation-buttons a {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .menu-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .orders-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .missing-details {
+            margin-top: 20px;
+            color: #8a5b20;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .confirmation-container {
+                margin: 25px 12px;
+                padding: 25px 16px;
+            }
+
+            .detail-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="confirmation-container">
+        <div class="success-icon" aria-hidden="true">🎉</div>
+
+        <h1>Order Confirmed!</h1>
+
+        <p>Thank you for ordering with Campus Canteen!</p>
+        <p>Your order has been placed successfully.</p>
+
+        <section class="order-details" aria-labelledby="details-heading">
+            <h2 id="details-heading">Your Order Details</h2>
+
+            <div id="order-details-content">
+                Loading order details...
+            </div>
+
+            <div class="order-items">
+                <h3>Items Ordered</h3>
+                <div id="order-items-list"></div>
+            </div>
+
+            <div class="order-total">
+                <span>Total Amount</span>
+                <span id="order-total">Not available</span>
+            </div>
+        </section>
+
+        <p id="details-note" class="missing-details" hidden></p>
+
+        <div class="confirmation-buttons">
+            <a href="menu.html" class="menu-btn">Order More Food</a>
+            <a href="my-orders.html" class="orders-btn">My Orders</a>
+        </div>
+    </main>
+
+    <script src="js/auth-guard.js"></script>
+<script>
+    (() => {
+        "use strict";
+
+        const detailsContainer =
+            document.getElementById("order-details-content");
+
+        const itemsContainer =
+            document.getElementById("order-items-list");
+
+        const totalElement =
+            document.getElementById("order-total");
+
+        const noteElement =
+            document.getElementById("details-note");
+
+        function addDetail(label, value) {
+            const row = document.createElement("div");
+            row.className = "detail-row";
+
+            const labelElement = document.createElement("span");
+            labelElement.textContent = label;
+
+            const valueElement = document.createElement("span");
+            valueElement.textContent = value;
+
+            row.append(labelElement, valueElement);
+            detailsContainer.appendChild(row);
+        }
+
+        function displayItems(items) {
+            itemsContainer.replaceChildren();
+
+            if (Array.isArray(items) && items.length > 0) {
+                // Preferred format: saved order item details.
+                for (const item of items) {
+                    const row = document.createElement("div");
+                    row.className = "order-item";
+
+                    const name = document.createElement("span");
+                    name.textContent =
+                        `${item.itemName || item.name || "Food item"} × ${item.quantity || 1}`;
+
+                    const amount = document.createElement("span");
+
+                    const subtotal =
+                        item.subtotal ??
+                        (
+                            Number(item.unitPrice ?? item.price) *
+                            Number(item.quantity || 1)
+                        );
+
+                    amount.textContent =
+                        subtotal != null && Number.isFinite(Number(subtotal))
+                            ? `₹${Number(subtotal).toFixed(2)}`
+                            : "";
+
+                    row.append(name, amount);
+                    itemsContainer.appendChild(row);
+                }
+
+                return;
+            }
+
+            if (
+                items &&
+                typeof items === "object" &&
+                !Array.isArray(items) &&
+                Object.keys(items).length > 0
+            ) {
+                // Alternate format: food ID -> quantity.
+                for (const [id, quantity] of Object.entries(items)) {
+                    const row = document.createElement("div");
+                    row.className = "order-item";
+                    row.dataset.foodId = String(id);
+
+                    const name = document.createElement("span");
+                    name.textContent = `Food item #${id} × ${quantity}`;
+
+                    const amount = document.createElement("span");
+
+                    row.append(name, amount);
+                    itemsContainer.appendChild(row);
+                }
+
+                // Try to replace food IDs with names from the current menu.
+                fetch("http://localhost:8080/api/menu")
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(
+                                `Menu request failed: ${response.status}`
+                            );
+                        }
+
+                        return response.json();
+                    })
+                    .then(menu => {
+                        for (const [id, quantity] of Object.entries(items)) {
+                            const food = menu.find(
+                                item => Number(item.id) === Number(id)
+                            );
+
+                            const row = Array.from(
+                                itemsContainer.querySelectorAll(".order-item")
+                            ).find(
+                                element => element.dataset.foodId === String(id)
+                            );
+
+                            if (row && food) {
+                                row.firstElementChild.textContent =
+                                    `${food.name} × ${quantity}`;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.warn(
+                            "Could not load menu item names:",
+                            error
+                        );
+                    });
+
+                return;
+            }
+
+            itemsContainer.textContent =
+                "Item details are not available in the confirmation response.";
+        }
+
+        function displayOrder() {
+            let order = null;
+
+            try {
+                const saved = sessionStorage.getItem("confirmedOrder");
+                order = saved ? JSON.parse(saved) : null;
+            } catch (error) {
+                console.error("Could not read confirmed order:", error);
+            }
+
+            if (!order) {
+                detailsContainer.textContent =
+                    "No recent order details are available in this browser session.";
+
+                itemsContainer.textContent =
+                    "Please check My Orders for saved order records.";
+
+                totalElement.textContent = "Not available";
+
+                noteElement.hidden = false;
+                noteElement.textContent =
+                    "Order details may be unavailable if this page was opened directly.";
+
+                return;
+            }
+
+            detailsContainer.replaceChildren();
+
+            const orderId =
+                order.id ?? order.orderId ?? order.order_id;
+
+            addDetail(
+                "Order ID",
+                orderId != null ? String(orderId) : "Not returned by server"
+            );
+
+            addDetail(
+                "Student Name",
+                order.studentName || "Not available"
+            );
+
+            addDetail(
+                "Roll Number",
+                order.rollNumber || "Not available"
+            );
+
+            addDetail(
+                "Pickup Time",
+                order.pickupTime || "Not available"
+            );
+
+            addDetail(
+                "Order Status",
+                order.status || "PENDING"
+            );
+
+            displayItems(order.items);
+
+            const total =
+                order.totalAmount ?? order.total_amount;
+
+            if (total != null && Number.isFinite(Number(total))) {
+                totalElement.textContent =
+                    `₹${Number(total).toFixed(2)}`;
+            } else {
+                totalElement.textContent = "See saved order record";
+            }
+
+            noteElement.hidden = true;
+        }
+
+        displayOrder();
+    })();
+</script>
+
+</body>
+</html>

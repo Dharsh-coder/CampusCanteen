@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration - Campus Canteen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .register-container {
+            max-width: 480px;
+            margin: 40px auto;
+            padding: 35px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .register-container h1 {
+            text-align: center;
+            color: #292929;
+            margin-bottom: 10px;
+        }
+
+        .register-description {
+            text-align: center;
+            color: #777777;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6933;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: #ff6933;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background: #ed5424;
+        }
+
+        .register-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 16px;
+            text-align: center;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #555555;
+        }
+
+        .login-link a {
+            color: #ff6933;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #ff6933;
+            text-decoration: none;
+        }
+
+        @media (max-width: 550px) {
+            .register-container {
+                margin: 25px 15px;
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            🍴 <span>Campus Canteen</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">Cart 🛒</a></li>
+            <li><a href="my-orders.html">My Orders</a></li>
+        </ul>
+    </nav>
+
+    <main class="register-container">
+
+        <h1>📝 Student Registration</h1>
+
+        <p class="register-description">
+            Create your Campus Canteen account
+        </p>
+
+        <form id="register-form">
+
+            <div class="form-group">
+                <label for="student-name">Full Name</label>
+                <input
+                    type="text"
+                    id="student-name"
+                    name="studentName"
+                    placeholder="Enter your full name"
+                    maxlength="100"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="roll-number">Roll Number</label>
+                <input
+                    type="text"
+                    id="roll-number"
+                    name="rollNumber"
+                    placeholder="Enter your roll number"
+                    maxlength="30"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    maxlength="150"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Mobile Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your 10-digit mobile number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    inputmode="numeric"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="8"
+                    maxlength="72"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirmPassword"
+                    placeholder="Re-enter your password"
+                    minlength="8"
+                    maxlength="72"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="register-btn">
+                Register
+            </button>
+
+            <p id="message" class="message" role="status"
+               aria-live="polite"></p>
+
+        </form>
+
+        <p class="login-link">
+            Already have an account?
+            <a href="login.html">Login here</a>
+        </p>
+
+        <a href="index.html" class="back-home">
+            ← Back to Home
+        </a>
+
+    </main>
+
+    <script>
+        const API_URL =
+            "http://localhost:8080/api/student/auth/register";
+
+        const registerForm =
+            document.getElementById("register-form");
+
+        const message =
+            document.getElementById("message");
+
+        const registerButton =
+            registerForm.querySelector('button[type="submit"]');
+
+        registerForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const studentName =
+                document.getElementById("student-name").value.trim();
+
+            const rollNumber =
+                document.getElementById("roll-number").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const confirmPassword =
+                document.getElementById("confirm-password").value;
+
+            if (
+                !studentName ||
+                !rollNumber ||
+                !email ||
+                !phone ||
+                !password ||
+                !confirmPassword
+            ) {
+                message.style.color = "red";
+                message.textContent = "Please fill in all fields.";
+                return;
+            }
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+                message.style.color = "red";
+                message.textContent =
+                    "Please enter a valid 10-digit mobile number.";
+                return;
+            }
+
+            if (password.length < 8 || password.length > 72) {
+                message.style.color = "red";
+                message.textContent =
+                    "Password must contain between 8 and 72 characters.";
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                message.style.color = "red";
+                message.textContent = "Passwords do not match.";
+                return;
+            }
+
+            registerButton.disabled = true;
+            registerButton.textContent = "Registering...";
+            message.style.color = "#555";
+            message.textContent = "Creating your student account...";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        studentName: studentName,
+                        rollNumber: rollNumber,
+                        email: email,
+                        phone: phone,
+                        password: password
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    if (response.status === 409) {
+                        throw new Error(
+                            data.detail ||
+                            data.message ||
+                            "This email or roll number is already registered."
+                        );
+                    }
+
+                    if (response.status === 400) {
+                        throw new Error(
+                            data.detail ||
+                            data.message ||
+                            "Please check your details and try again."
+                        );
+                    }
+
+                    throw new Error(
+                        data.detail ||
+                        data.message ||
+                        "Registration failed. Please try again."
+                    );
+                }
+
+                message.style.color = "green";
+                message.textContent =
+                    "Registration successful! Redirecting to login...";
+
+                registerForm.reset();
+
+                // Send the new student to the login page.
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1200);
+
+            } catch (error) {
+                message.style.color = "red";
+
+                message.textContent =
+                    error instanceof TypeError
+                        ? "Cannot connect to the server. Make sure Spring Boot is running and try again."
+                        : error.message;
+
+            } finally {
+                registerButton.disabled = false;
+                registerButton.textContent = "Register";
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Canteen | Pre-Order Food</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .role-section {
+            padding: 65px 8%;
+            background: #fffaf5;
+            text-align: center;
+        }
+
+        .role-section .section-heading p {
+            color: #e67e22;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .role-section .section-heading h2 {
+            margin: 12px 0;
+        }
+
+        .role-description {
+            color: #666;
+            margin: 12px auto 30px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .role-card {
+            background: white;
+            border: 1px solid #f0e3d7;
+            border-radius: 16px;
+            padding: 32px 24px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .1);
+        }
+
+        .role-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .role-card h3 {
+            font-size: 23px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .role-card p {
+            color: #666;
+            line-height: 1.6;
+            min-height: 50px;
+            margin-bottom: 22px;
+        }
+
+        .role-button {
+            display: inline-block;
+            width: 100%;
+            max-width: 260px;
+            padding: 13px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background .2s;
+        }
+
+        .student-button {
+            background: #e67e22;
+            color: white;
+        }
+
+        .student-button:hover {
+            background: #cf6d17;
+        }
+
+        .staff-button {
+    background: #e67e22;
+    color: white;
+}
+
+.staff-button:hover {
+    background: #cf6d17;
+}
+
+        .role-note {
+            margin-top: 22px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        @media (max-width: 650px) {
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .role-section {
+                padding: 45px 6%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            🍴 <span>Campus Canteen</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="my-orders.html">My Orders</a></li>
+            <li><a href="#choose-login">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="floating-food food-1">🍔</div>
+        <div class="floating-food food-2">🍕</div>
+        <div class="floating-food food-3">🍟</div>
+        <div class="floating-food food-4">🥤</div>
+        <div class="floating-food food-5">🍩</div>
+        <div class="floating-food food-6">🥪</div>
+
+        <div class="hero-content">
+            <div class="small-title">🍽️ FRESH • FAST • EASY</div>
+
+            <h1>
+                Your Favorite Food,
+                <span>Just One Click Away!</span>
+            </h1>
+
+            <p>
+                Skip the long canteen queue.
+                Pre-order your favorite food and collect it when it's ready.
+            </p>
+
+            <div class="hero-buttons">
+    <a href="#choose-login" class="primary-btn">Order Now 🛒</a>
+</div>
+        </div>
+
+        <div class="hero-food">
+            <div class="food-circle">
+                <div class="main-food">🍛</div>
+            </div>
+
+            <div class="food-badge badge-1">⭐ Fresh</div>
+            <div class="food-badge badge-2">⚡ Quick</div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section">
+        <div class="section-heading">
+            <p>WHY USE OUR CANTEEN?</p>
+            <h2>Food Ordering Made <span>Simple</span></h2>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Easy Ordering</h3>
+                <p>Browse the menu and order your favorite food in just a few clicks.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⏱️</div>
+                <h3>Save Your Time</h3>
+                <p>Avoid long queues by ordering your food before reaching the canteen.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3>Track Your Order</h3>
+                <p>Check your saved orders and their latest status.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHOOSE STUDENT OR STAFF -->
+    <section class="role-section" id="choose-login">
+        <div class="section-heading">
+            <p>WELCOME TO CAMPUS CANTEEN</p>
+            <h2>How would you like to <span>continue?</span></h2>
+        </div>
+
+        <p class="role-description">
+            Choose your portal to get started.
+            Students can order food, while staff can manage the canteen.
+        </p>
+
+        <div class="role-cards">
+            <article class="role-card">
+                <div class="role-icon">🎓</div>
+                <h3>Student Portal</h3>
+                <p>
+                    Sign in or register to access the student portal,
+                    browse the menu, and track your orders.
+                </p>
+                <a href="login.html" class="role-button student-button">
+                    Student Login
+                </a>
+                <p style="min-height:0;margin:14px 0 0;font-size:14px;">
+                    New student?
+                    <a href="register.html" style="color:#e67e22;">Register here</a>
+                </p>
+            </article>
+
+            <article class="role-card">
+                <div class="role-icon">🛡️</div>
+                <h3>Staff / Admin Portal</h3>
+                <p>
+                    Access the staff dashboard to manage food items,
+                    availability, and student orders.
+                </p>
+                <a href="../canteen-staff/login.html"
+                   class="role-button staff-button">
+                    Staff Login
+                </a>
+            </article>
+        </div>
+
+        <p class="role-note">
+            Staff access is intended for authorized canteen personnel only.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">🍴 Campus Canteen</div>
+        <p>Smart food ordering for a smarter campus.</p>
+        <p class="copyright">© 2026 Campus Canteen. All rights reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

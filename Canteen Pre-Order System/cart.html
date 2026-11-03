@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Cart - Campus Canteen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+    <div class="logo">
+        🍴 <span>Campus Canteen</span>
+    </div>
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="index.html">Home</a>
+        </li>
+
+        <li>
+            <a href="menu.html">Menu</a>
+        </li>
+
+        <li>
+            <a href="cart.html" class="active">Cart 🛒</a>
+        </li>
+
+        <li>
+            <a href="my-orders.html">My Orders</a>
+        </li>
+        <li>
+    <button type="button" id="student-logout-btn">Logout</button>
+</li>
+
+    </ul>
+
+</nav>
+
+
+    <!-- Cart Header -->
+    <section class="menu-header">
+
+        <h1>🛒 My Cart</h1>
+
+        <p>Review your selected food before placing the order.</p>
+
+    </section>
+
+
+    <!-- Cart Items -->
+    <section class="cart-container">
+
+        <div id="cart-items">
+            <!-- Cart items will appear here using JavaScript -->
+        </div>
+
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+
+            <h2>Order Summary</h2>
+
+            <p>
+                Total Items:
+                <span id="total-items">0</span>
+            </p>
+
+            <p>
+                Total Amount:
+                ₹<span id="total-price">0</span>
+            </p>
+
+            <button id="place-order-btn" disabled>
+                Place Order
+            </button>
+
+            <button onclick="window.location.href='menu.html'" class="continue-shopping-btn">
+    ← Continue Shopping
+</button>
+
+        </div>
+
+    </section>
+
+
+    <script src="js/auth-guard.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/student-logout.js"></script>
+
+</body>
+
+</html>

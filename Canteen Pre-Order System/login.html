@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | Campus Canteen</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fff4e6, #ffe0c2);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e87516;
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #e87516;
+            box-shadow: 0 0 0 3px rgba(232, 117, 22, 0.12);
+        }
+
+        .password-box {
+            display: flex;
+            gap: 8px;
+        }
+
+        .password-box input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .toggle-password {
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 0 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 8px;
+            background: #e87516;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #cf620d;
+        }
+
+        .login-btn:disabled {
+            background: #d8a477;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 22px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .register a,
+        .home-link {
+            color: #e87516;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register a:hover,
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .home {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">🍽️</div>
+
+        <h1>Campus Canteen</h1>
+
+        <p class="subtitle">
+            Welcome back! Login to continue.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">Student Email ID</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                        aria-label="Show password"
+                    >👁️</button>
+
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+            <p id="message" class="message" role="status"
+               aria-live="polite"></p>
+
+        </form>
+
+        <p class="register">
+            Don't have an account?
+            <a href="register.html">Register here</a>
+        </p>
+
+        <p class="home">
+            <a href="index.html" class="home-link">
+                ← Back to Home
+            </a>
+        </p>
+
+    </div>
+
+    <script>
+        const API_BASE_URL = "http://localhost:8080/api";
+
+        const loginForm = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const message = document.getElementById("message");
+
+        // Show or hide password.
+        togglePassword.addEventListener("click", function () {
+            const isHidden = passwordInput.type === "password";
+
+            passwordInput.type = isHidden ? "text" : "password";
+
+            togglePassword.textContent = isHidden ? "🙈" : "👁️";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                isHidden ? "Hide password" : "Show password"
+            );
+        });
+
+        // Student login and session verification.
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                message.style.color = "red";
+                message.textContent =
+                    "Please enter your email and password.";
+                return;
+            }
+
+            const loginButton = loginForm.querySelector(
+                'button[type="submit"]'
+            );
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Logging in...";
+
+            message.style.color = "#555";
+            message.textContent = "";
+
+            try {
+                // STEP 1: Send login details to the backend.
+                const loginResponse = await fetch(
+                    `${API_BASE_URL}/student/auth/login`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+                const loginData = await loginResponse.json()
+                    .catch(() => ({}));
+
+                if (!loginResponse.ok) {
+                    throw new Error(
+                        loginResponse.status === 401
+                            ? "Invalid email or password."
+                            : loginData.detail ||
+                              loginData.message ||
+                              "Login failed. Please try again."
+                    );
+                }
+
+                // STEP 2: Verify the logged-in student session.
+                message.textContent =
+                    "Login successful. Verifying your session...";
+
+                const sessionResponse = await fetch(
+                    `${API_BASE_URL}/student/auth/me`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                const student = await sessionResponse.json()
+                    .catch(() => ({}));
+
+                if (!sessionResponse.ok) {
+                    throw new Error(
+                        student.detail ||
+                        student.message ||
+                        "Your session could not be verified. Please try again."
+                    );
+                }
+
+                // STEP 3: Store profile details for display only.
+                // Authentication must be checked by the backend session.
+                sessionStorage.setItem(
+                    "studentProfile",
+                    JSON.stringify({
+                        id: student.id,
+                        studentName: student.studentName,
+                        rollNumber: student.rollNumber,
+                        email: student.email
+                    })
+                );
+
+                // STEP 4: Redirect only after session verification succeeds.
+                message.style.color = "green";
+                message.textContent =
+                    "Login successful! Redirecting...";
+
+                window.location.href = "menu.html";
+
+            } catch (error) {
+                message.style.color = "red";
+
+                message.textContent =
+                    error instanceof TypeError
+                        ? "Cannot connect to the server. Check that the backend is running."
+                        : error.message;
+
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Login";
+            }
+        });
+    </script>
+
+</body>
+</html>
