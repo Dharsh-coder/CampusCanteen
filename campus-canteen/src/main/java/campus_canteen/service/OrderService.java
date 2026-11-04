@@ -10,7 +10,9 @@ import campus_canteen.entity.OrderItem;
 import campus_canteen.repository.FoodItemRepository;
 import campus_canteen.repository.OrderItemRepository;
 import campus_canteen.repository.OrderRepository;
+import campus_canteen.controller.StaffOrderResponse;
 import campus_canteen.controller.StudentOrderResponse;
+import campus_canteen.controller.StaffOrderResponse;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,9 +138,46 @@ public Order placeOrder(
 }
 
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAllByOrderByCreatedAtDesc();
-    }
+   @Transactional(readOnly = true)
+public List<StaffOrderResponse> getAllOrders() {
+
+    List<Order> orders =
+            orderRepository.findAllByOrderByCreatedAtDesc();
+
+    return orders.stream()
+            .map(order -> {
+
+                List<StaffOrderResponse.OrderItemResponse> items =
+                        orderItemRepository
+                                .findByOrder_IdOrderByIdAsc(order.getId())
+                                .stream()
+                                .map(item ->
+                                        new StaffOrderResponse.OrderItemResponse(
+                                                item.getItemName(),
+                                                item.getUnitPrice(),
+                                                item.getQuantity(),
+                                                item.getSubtotal()
+                                        ))
+                                .toList();
+
+                return new StaffOrderResponse(
+                        order.getId(),
+                        order.getStudentName(),
+                        order.getRollNumber(),
+                        order.getPhone(),
+                        order.getPickupTime(),
+                        order.getFulfillmentType(),
+                        order.getCampusLocation().getName(),
+                        order.getDeliveryCharge(),
+                        order.getTotalAmount(),
+                        order.getPaymentMethod(),
+                        order.getStatus(),
+                        order.getCreatedAt(),
+                        items
+                );
+            })
+            .toList();
+}
 
     public List<Order> getOrdersByRollNumber(String rollNumber) {
         return orderRepository.findByRollNumberOrderByCreatedAtDesc(

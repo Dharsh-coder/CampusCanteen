@@ -87,17 +87,40 @@ function renderOrders() {
     filteredOrders.forEach(order => {
         const row = document.createElement("tr");
 
-        row.append(
-            createOrderCell(`#${order.id}`),
-            createOrderCell(order.studentName || "—"),
-            createOrderCell(order.rollNumber || "—"),
-            createOrderCell(order.phone || "—"),
-            createOrderCell(order.pickupTime || "—"),
-            createOrderCell(
-                `₹${Number(order.totalAmount || 0).toFixed(2)}`
-            ),
-            createOrderCell(order.paymentMethod || "CASH")
-        );
+       const itemsCell = document.createElement("td");
+
+if (Array.isArray(order.items) && order.items.length > 0) {
+
+    const itemList = document.createElement("ul");
+    itemList.className = "order-items-list";
+
+    order.items.forEach(item => {
+        const listItem = document.createElement("li");
+
+        listItem.textContent =
+            `${item.quantity} × ${item.itemName} — ₹${Number(item.subtotal || 0).toFixed(2)}`;
+
+        itemList.appendChild(listItem);
+    });
+
+    itemsCell.appendChild(itemList);
+
+} else {
+    itemsCell.textContent = "No items found";
+}
+
+row.append(
+    createOrderCell(`#${order.id}`),
+    createOrderCell(order.studentName || "—"),
+    createOrderCell(order.rollNumber || "—"),
+    createOrderCell(order.phone || "—"),
+    createOrderCell(order.pickupTime || "—"),
+    itemsCell,
+    createOrderCell(
+        `₹${Number(order.totalAmount || 0).toFixed(2)}`
+    ),
+    createOrderCell(order.paymentMethod || "CASH")
+);
 
         const statusCell = document.createElement("td");
         const statusBadge = document.createElement("span");

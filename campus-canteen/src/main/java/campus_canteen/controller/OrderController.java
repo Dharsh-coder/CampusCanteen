@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import campus_canteen.controller.StaffOrderResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -125,9 +126,9 @@ return orderService.placeOrder(
 
     // Staff: list all orders
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
-    }
+public List<StaffOrderResponse> getAllOrders() {
+    return orderService.getAllOrders();
+}
 
     public record StatusRequest(
             @Pattern(regexp = "COMPLETED|CANCELLED")
